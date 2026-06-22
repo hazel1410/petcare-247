@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "PetCare 24/7 - Vet",
+    "slug": "petcare-247-vet",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "petcare-vet",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.petcare247.vet"
+    },
+    "android": {
+      "package": "com.petcare247.vet"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

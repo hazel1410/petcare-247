@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "PetCare 24/7",
+    "slug": "petcare-247",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "petcare",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#4A9E8E",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.petcare247.owner"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#4A9E8E"
+      },
+      "package": "com.petcare247.owner"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
