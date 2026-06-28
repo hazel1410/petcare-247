@@ -271,6 +271,16 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
 
 export const serviceCategory = (id: string) => SERVICE_CATEGORIES.find((c) => c.id === id) ?? SERVICE_CATEGORIES[0];
 
+export interface TelehealthDay {
+  label: string;
+  times: string[];
+}
+export const TELEHEALTH_SLOTS: TelehealthDay[] = [
+  { label: 'Today', times: ['2:00 PM', '4:30 PM', '7:00 PM'] },
+  { label: 'Tomorrow', times: ['9:00 AM', '11:30 AM', '3:00 PM', '6:00 PM'] },
+  { label: 'Sat', times: ['10:00 AM', '1:00 PM'] },
+];
+
 export interface Vaccine {
   name: string;
   date: string;

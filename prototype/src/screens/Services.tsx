@@ -23,6 +23,22 @@ export function ServicesScreen() {
       <div className="pad stack">
         <h1 className="h1">Services</h1>
 
+        {/* Book a scheduled (non-urgent) vet visit */}
+        <button
+          className="card card-tap"
+          style={{ textAlign: 'left', cursor: 'pointer', background: 'var(--primary-soft)', border: '1px solid var(--primary)', width: '100%' }}
+          onClick={() => a.go('telehealth')}
+        >
+          <div className="row" style={{ gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 26 }}>📅</span>
+            <div className="grow">
+              <span className="h3">Book a vet visit</span>
+              <p className="small muted" style={{ marginTop: 2 }}>Schedule a non-urgent video or text consult</p>
+            </div>
+            <Icon name="chevron" size={18} color="var(--primary)" />
+          </div>
+        </button>
+
         {/* Everything for your pet — the marketplace breadth */}
         <section className="stack-sm">
           <h2 className="h2">For your pet</h2>

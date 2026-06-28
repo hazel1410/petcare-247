@@ -142,19 +142,27 @@ export function PetDetailScreen() {
           </div>
         )}
 
-        {/* Records placeholder */}
-        <div className="card card-tap lrow" onClick={() => {}}>
-          <div className="row" style={{ gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 22 }}>💉</span>
-            <div className="grow">
-              <span className="h3">Records &amp; vaccines</span>
-              <p className="small muted" style={{ marginTop: 2 }}>
-                Upload or view health documents
-              </p>
+        {/* Quick links */}
+        {[
+          { emoji: '💉', title: 'Records & vaccines', sub: 'View health documents & shots', to: 'records' as const },
+          { emoji: '⏰', title: 'Reminders', sub: 'Meds, feeding & vaccine alerts', to: 'reminders' as const },
+          { emoji: '🏷️', title: 'Lost-pet QR tag', sub: `Help ${pet.name} get home if lost`, to: 'lostPet' as const },
+        ].map((link) => (
+          <div
+            key={link.to}
+            className="card card-tap lrow"
+            onClick={() => a.go(link.to, { petId: pet.id })}
+          >
+            <div className="row" style={{ gap: 12, alignItems: 'center' }}>
+              <span style={{ fontSize: 22 }}>{link.emoji}</span>
+              <div className="grow">
+                <span className="h3">{link.title}</span>
+                <p className="small muted" style={{ marginTop: 2 }}>{link.sub}</p>
+              </div>
+              <Icon name="chevron" size={18} color="var(--text-muted)" />
             </div>
-            <Icon name="chevron" size={18} color="var(--text-muted)" />
           </div>
-        </div>
+        ))}
 
         {/* CTA */}
         <button

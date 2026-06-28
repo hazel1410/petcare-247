@@ -11,6 +11,8 @@ import { CommunityScreen } from './screens/Community';
 import { AccountScreen } from './screens/Account';
 import { RecordsScreen } from './screens/Records';
 import { RemindersScreen } from './screens/Reminders';
+import { TelehealthScreen } from './screens/Telehealth';
+import { LostPetScreen } from './screens/LostPet';
 
 const SCREENS: Record<ScreenName, () => JSX.Element> = {
   welcome: WelcomeScreen,
@@ -34,6 +36,8 @@ const SCREENS: Record<ScreenName, () => JSX.Element> = {
   serviceCategory: ServiceCategoryScreen,
   records: RecordsScreen,
   reminders: RemindersScreen,
+  telehealth: TelehealthScreen,
+  lostPet: LostPetScreen,
 };
 
 const TAB_ITEMS: { t: TabName; icon: string; label: string }[] = [
