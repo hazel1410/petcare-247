@@ -16,4 +16,4 @@
 | 12 | ✅ | Build Waitlist email capture form (stubbed success state) + Footer with markets (US/CA/IN) | 2026-06-28 |
 | 13 | ✅ | Build passes (`pnpm build`), clean production bundle | 2026-06-28 |
 
-**Dev server:** `pnpm --filter @petcare/site dev` → http://localhost:5173
+**Dev server:** `pnpm --filter @petcare/site dev` → http://localhost:5180
