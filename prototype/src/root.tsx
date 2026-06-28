@@ -58,11 +58,8 @@ function Fab() {
   return (
     <div className="fab-wrap">
       <button className="fab" onClick={() => go('askVet')} aria-label="Ask a Vet Now">
-        <Icon name="paw" size={22} color="#3b2600" />
-        <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <span className="fab-title">Ask a Vet Now</span>
-          <span className="fab-sub">It's 3am? We're here.</span>
-        </span>
+        <Icon name="paw" size={20} color="#fff" />
+        <span className="fab-title">Ask a Vet Now</span>
       </button>
     </div>
   );
@@ -79,7 +76,7 @@ function Shell() {
         <div className="notch" />
         <StatusBar />
         <Comp key={screen} />
-        {tabish && <Fab />}
+        {tabish && screen !== 'home' && <Fab />}
         {tabish && <TabBar />}
       </div>
     </div>
