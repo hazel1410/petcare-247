@@ -1,8 +1,12 @@
 export const APP_NAME = 'PetCare 24/7';
 export const APP_DESCRIPTION = 'Global vet triage — ask a vet anytime, day or night';
 
-export const SPECIES = ['dog', 'cat'] as const;
+export const SPECIES = ['dog', 'cat', 'parrot', 'rabbit', 'other'] as const;
 export type Species = (typeof SPECIES)[number];
+
+// Emergency triage launches for dogs & cats only; profiles/records support all species.
+export const TRIAGE_SPECIES = ['dog', 'cat'] as const;
+export type TriageSpecies = (typeof TRIAGE_SPECIES)[number];
 
 export const USER_ROLES = ['owner', 'vet', 'admin'] as const;
 export type UserRole = (typeof USER_ROLES)[number];

@@ -44,6 +44,8 @@ export interface VetProfile extends UserProfile {
 
 export interface OwnerProfile extends UserProfile {
   role: 'owner';
+  phone?: string;
+  address?: string;
   pets: Pet[];
   questionsAsked: number;
   credits: number;
@@ -55,12 +57,15 @@ export interface Pet {
   name: string;
   species: Species;
   breed?: string;
+  color?: string;
   ageYears?: number;
   ageMonths?: number;
   weightKg?: number;
   allergies: string[];
   medications: string[];
   medicalConditions: string[];
+  likes?: string[]; // feeds the product-suggestion engine
+  dislikes?: string[];
   photoUrl?: string;
   createdAt: string;
 }

@@ -25,9 +25,12 @@ export const petProfileSchema = z.object({
   ageYears: z.number().min(0).max(40).optional(),
   ageMonths: z.number().min(0).max(11).optional(),
   weightKg: z.number().min(0.1).max(200).optional(),
+  color: z.string().max(100).optional(),
   allergies: z.array(z.string()).default([]),
   medications: z.array(z.string()).default([]),
   medicalConditions: z.array(z.string()).default([]),
+  likes: z.array(z.string()).default([]),
+  dislikes: z.array(z.string()).default([]),
   photoUrl: z.string().url().optional(),
 });
 
