@@ -8,7 +8,14 @@ import WebKit
 final class RootViewController: UIViewController, WKNavigationDelegate {
     private var webView: WKWebView!
     private let spinner = UIActivityIndicatorView(style: .large)
-    private let urlString = "http://localhost:4321/"
+    private let urlString: String = {
+        var base = "http://localhost:4321/"
+        for arg in ProcessInfo.processInfo.arguments where arg.hasPrefix("--screen=") {
+            let screen = String(arg.dropFirst("--screen=".count))
+            if !screen.isEmpty { base += "?screen=" + screen }
+        }
+        return base
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()

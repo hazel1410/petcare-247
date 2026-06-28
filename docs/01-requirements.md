@@ -1,5 +1,9 @@
 # PetCare 24/7 — Product Requirements Document (PRD)
 
+> **⚠️ Read `05-strategy-refinements.md` (v1.1) alongside this doc.** It amends E3/E4/E5/E6/E7/E14/E16/E17
+> from competitive analysis: instant-match-first (no browse/book at 3am), reputation flywheel from day 1,
+> capital-light directory/referral breadth, and one-pet-identity. Where v1.1 conflicts with v1, v1.1 wins.
+
 ## 1. Document Control
 
 | Field | Value |

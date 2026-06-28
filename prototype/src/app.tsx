@@ -137,20 +137,65 @@ const seedOwner: Owner = {
   email: 'ipsita@example.com',
 };
 
+// Dev-only deep link: ?screen=<name> jumps straight to a screen (with seed data)
+// so any screen can be opened/screenshotted directly. No param => normal welcome flow.
+function readInitial() {
+  const def = {
+    stack: ['welcome'] as ScreenName[],
+    params: {} as Record<string, any>,
+    tab: 'home' as TabName,
+    owner: null as Owner | null,
+    pets: [] as Pet[],
+    selectedPetId: null as string | null,
+    consult: emptyConsult(),
+  };
+  if (typeof location === 'undefined') return def;
+  const s = new URLSearchParams(location.search).get('screen') as ScreenName | null;
+  if (!s) return def;
+  const needsData = !['welcome', 'auth', 'otp', 'ownerProfile', 'petProfile'].includes(s);
+  let consult = emptyConsult();
+  let params: Record<string, any> = {};
+  let stack: ScreenName[];
+  let tab: TabName = 'home';
+  if (isTabScreen(s)) {
+    stack = [s];
+    tab = s;
+  } else {
+    stack = ['home', s];
+    if (s === 'petDetail') params = { petId: seedPet.id };
+    if (s === 'vetProfile') params = { vetId: 'vet_aisha' };
+    if (s === 'askVet') consult = { ...consult, petId: seedPet.id };
+    if (s === 'erFallback') consult = { ...consult, petId: seedPet.id, urgency: 'emergency', urgencyScore: 5 };
+    if (s === 'consult' || s === 'rate' || s === 'vetProfile') {
+      consult = { ...consult, petId: seedPet.id, vetId: 'vet_aisha', urgency: 'soon', urgencyScore: 3, description: 'My dog vomited twice this morning and seems a bit tired.' };
+    }
+  }
+  return {
+    stack,
+    params,
+    tab,
+    owner: needsData ? seedOwner : null,
+    pets: needsData ? [seedPet] : [],
+    selectedPetId: needsData ? seedPet.id : null,
+    consult,
+  };
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [stack, setStack] = useState<ScreenName[]>(['welcome']);
-  const [params, setParams] = useState<Record<string, any>>({});
-  const [tab, setTabState] = useState<TabName>('home');
+  const [init] = useState(readInitial);
+  const [stack, setStack] = useState<ScreenName[]>(init.stack);
+  const [params, setParams] = useState<Record<string, any>>(init.params);
+  const [tab, setTabState] = useState<TabName>(init.tab);
 
   const [authMethod, setAuthMethod] = useState<'phone' | 'email'>('phone');
   const [authValue, setAuthValue] = useState('');
 
-  const [owner, setOwner] = useState<Owner | null>(null);
-  const [pets, setPets] = useState<Pet[]>([]);
-  const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+  const [owner, setOwner] = useState<Owner | null>(init.owner);
+  const [pets, setPets] = useState<Pet[]>(init.pets);
+  const [selectedPetId, setSelectedPetId] = useState<string | null>(init.selectedPetId);
   const [vetsOnline] = useState(14);
 
-  const [consult, setConsult] = useState<ConsultDraft>(emptyConsult());
+  const [consult, setConsult] = useState<ConsultDraft>(init.consult);
 
   const screen = stack[stack.length - 1];
 
