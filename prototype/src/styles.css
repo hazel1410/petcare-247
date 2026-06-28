@@ -35,6 +35,7 @@
   --shadow-md: 0 6px 18px rgba(31, 41, 55, 0.08);
   --shadow-lg: 0 16px 40px rgba(31, 41, 55, 0.14);
 
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-head: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 }
@@ -98,10 +99,17 @@ body {
   .phone {
     width: 100vw;
     height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
     border-radius: 0;
     border: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
+  /* on a real device iOS draws the real status bar — drop our fake one */
+  .notch { display: none; }
+  .statusbar { display: none; }
+  .tabbar { padding-bottom: 14px; }
 }
 
 .notch {
@@ -148,8 +156,8 @@ body {
 
 /* ---------- typography ---------- */
 h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; color: var(--text); }
-.h-hero { font-size: 30px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
-.h1 { font-size: 24px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; }
+.h-hero { font-family: var(--font-display); font-size: 34px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.h1 { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.18; letter-spacing: -0.005em; }
 .h2 { font-size: 19px; font-weight: 700; line-height: 1.25; }
 .h3 { font-size: 16px; font-weight: 700; }
 .body { font-size: 15px; line-height: 1.55; color: var(--text); }
@@ -332,6 +340,31 @@ h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; color: var(--text); }
 
 .divider { height: 1px; background: var(--border); margin: 4px 0; }
 
+/* centered "or" divider for the login screen */
+.or-divider { display: flex; align-items: center; gap: 14px; margin: 8px 0; }
+.or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-strong); }
+.or-divider span { font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+
+/* social login buttons */
+.btn-social { justify-content: center; gap: 10px; }
+.btn-social svg { flex-shrink: 0; }
+
+/* welcome feature grid (shows the app is a super-app, not single-purpose) */
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.feature-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 13px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.feature-cell .tiny { line-height: 1.25; }
+
 /* toggle switch */
 .switch { width: 46px; height: 28px; border-radius: 999px; background: var(--border-strong); position: relative; cursor: pointer; transition: background 0.2s ease; flex-shrink: 0; border: 0; }
 .switch.on { background: var(--primary); }
@@ -359,3 +392,11 @@ h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; color: var(--text); }
 
 .coming { opacity: 0.92; }
 .coming .card { background: repeating-linear-gradient(135deg, #fbfbf8, #fbfbf8 10px, #f6f6f1 10px, #f6f6f1 20px); }
+
+/* ---- mobile overrides, placed LAST so they win over base rules
+   (media queries don't add specificity — source order decides) ---- */
+@media (max-width: 460px) {
+  .notch,
+  .statusbar { display: none !important; }
+  .tabbar { padding-bottom: 16px; }
+}
