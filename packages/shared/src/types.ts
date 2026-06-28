@@ -202,3 +202,83 @@ export interface FeatureFlagConfig {
   enabled: boolean;
   rolloutPercentage?: number;
 }
+
+/* ============================================================
+   Promoted from packages/api per NEEDS-FROM-LEAD.md — canonical
+   contracts shared between backend (api) and frontend.
+   ============================================================ */
+
+// Immutable record of every AI pre-screen interaction (safety audit).
+export interface AIAuditLogEntry {
+  id: string;
+  sessionId: string;
+  prompt: string;
+  model: string;
+  output: string;
+  urgencyScore: number; // 1..5
+  blocked: boolean; // content-filter or keyword hard-rule fired
+  blockReason?: string;
+  createdAt: string; // immutable
+}
+
+// A full triage session from "ask" through resolution.
+export interface TriageSession {
+  id: string;
+  ownerId: string;
+  petId: string;
+  description: string;
+  symptoms: string[];
+  urgency: UrgencyLevel;
+  forcedEmergency: boolean; // keyword hard-rule overrode the AI
+  status: QuestionStatus;
+  matchedVetId?: string;
+  audit: AIAuditLogEntry[];
+  createdAt: string;
+  resolvedAt?: string;
+}
+
+// Output of the vet-matching algorithm. vetId null => no vet → ER fallback.
+export interface VetMatchResult {
+  vetId: string | null;
+  score: number;
+  reason: string;
+  slaDeadline: string; // ISO timestamp
+  fallbackToEr: boolean;
+}
+
+// One row in the rail-agnostic wallet/credits ledger.
+export interface WalletEntry {
+  id: string;
+  ownerId: string;
+  kind: 'credit' | 'debit';
+  amountCents: number;
+  currency: string; // 'usd' | 'inr' | …
+  reason: string; // 'free_first_question' | 'consult_charge' | 'refund' | …
+  balanceCentsAfter: number;
+  createdAt: string;
+}
+
+// Configurable per-question pricing tier.
+export interface PricingTier {
+  id: string;
+  name: string; // 'Quick' | 'Standard' | 'Extended'
+  priceCents: number;
+  currency: string;
+  platformTakeRate: number; // 0..1
+}
+
+export interface PaymentAuthorization {
+  id: string;
+  status: 'authorized' | 'captured' | 'released';
+  amountCents: number;
+  currency: string;
+}
+
+// Pluggable payment rail (Stripe Connect US/CA, Wise India, RazorpayX later).
+export interface PaymentRail {
+  readonly id: string; // 'stripe' | 'wise' | 'razorpayx'
+  authorize(ownerId: string, amountCents: number, currency: string): Promise<PaymentAuthorization>;
+  capture(authorizationId: string): Promise<PaymentAuthorization>;
+  release(authorizationId: string): Promise<PaymentAuthorization>;
+  payout(vetId: string, amountCents: number, currency: string): Promise<{ id: string; status: string }>;
+}
