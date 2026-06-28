@@ -8,6 +8,7 @@
 | 4 | ✅ | Write DB functions + triggers (functions.sql — audit immutability, auto-profile, rating update, wallet ops, compliance) | 2026-06-28 |
 | 5 | ✅ | Build triage safety module (content filter, keyword rules, AI pre-screen stub, audit log, orchestrator service, tRPC router) | 2026-06-28 |
 | 6 | ✅ | Triage module unit tests (21 tests, all passing) | 2026-06-28 |
-| 7 | ⏳ | Vet-matching algorithm module | 2026-06-28 |
+| 7 | ✅ | Vet-matching algorithm module (timezone-aware routing, multi-factor scoring, SLA timer, ER fallback) | 2026-06-28 |
+| 8 | ✅ | Matching module unit tests (23 tests, all passing) | 2026-06-28 |
 | 8 | ⏳ | Payment-rail abstraction module | 2026-06-28 |
 | 9 | ⏳ | tRPC API surface (compose routers) | 2026-06-28 |
