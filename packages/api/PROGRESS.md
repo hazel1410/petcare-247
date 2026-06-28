@@ -10,5 +10,8 @@
 | 6 | ✅ | Triage module unit tests (21 tests, all passing) | 2026-06-28 |
 | 7 | ✅ | Vet-matching algorithm module (timezone-aware routing, multi-factor scoring, SLA timer, ER fallback) | 2026-06-28 |
 | 8 | ✅ | Matching module unit tests (23 tests, all passing) | 2026-06-28 |
+| 9 | ✅ | Payment-rail abstraction module (Stripe Connect + Wise adapters stubbed, wallet ledger, free-first-question, authorize-then-capture) | 2026-06-28 |
+| 10 | ✅ | Payment module unit tests (22 tests, all passing) | 2026-06-28 |
+| 11 | ⏳ | tRPC API surface (compose all module routers) | 2026-06-28 |
 | 8 | ⏳ | Payment-rail abstraction module | 2026-06-28 |
 | 9 | ⏳ | tRPC API surface (compose routers) | 2026-06-28 |
