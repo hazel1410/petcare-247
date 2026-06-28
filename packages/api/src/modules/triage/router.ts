@@ -19,6 +19,6 @@ export const triageRouter = router({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      return triageService.evaluate(input, ctx.db);
+      return triageService.evaluate(input, ctx.supabase);
     }),
 });

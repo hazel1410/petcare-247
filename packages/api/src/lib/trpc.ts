@@ -1,35 +1,25 @@
-import { initTRPC, TRPCError } from '@trpc/server';
-import type { SupabaseClient, User } from '@supabase/supabase-js';
-import type { UserRole } from '@petcare/shared';
+import { initTRPC } from '@trpc/server';
+import { supabase } from './supabase';
 
 export interface TRPCContext {
-  supabase: SupabaseClient;
-  user: User | null;
-  userRole: UserRole | null;
+  supabase: typeof supabase;
+  user: {
+    id: string;
+    email?: string;
+    user_metadata?: Record<string, unknown>;
+  } | null;
+  userRole: 'owner' | 'vet' | 'admin' | null;
 }
 
 const t = initTRPC.context<TRPCContext>().create();
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const middleware = t.middleware;
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const authedProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.user) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
+    throw new Error('UNAUTHORIZED');
   }
   return next({ ctx: { ...ctx, user: ctx.user } });
-});
-
-export const vetProcedure = protectedProcedure.use(({ ctx, next }) => {
-  if (ctx.userRole !== 'vet') {
-    throw new TRPCError({ code: 'FORBIDDEN', message: 'Vet access required' });
-  }
-  return next({ ctx: { ...ctx, userRole: 'vet' as const } });
-});
-
-export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
-  if (ctx.userRole !== 'admin') {
-    throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' });
-  }
-  return next({ ctx: { ...ctx, userRole: 'admin' as const } });
 });

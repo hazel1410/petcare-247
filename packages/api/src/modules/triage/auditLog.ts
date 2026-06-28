@@ -3,15 +3,15 @@ import { AIAuditLogEntry } from './types';
 // Supabase client — stub interface until the real client is wired
 interface SupabaseClient {
   from(table: string): {
-    insert(data: Record<string, unknown>): Promise<{ error?: { message: string } }>;
+    insert(data: Record<string, unknown>): Promise<{ error?: { message: string } }> | any;
   };
 }
 
 export async function writeAIAuditLog(
-  db: SupabaseClient,
+  supabase: SupabaseClient,
   entry: Omit<AIAuditLogEntry, 'id' | 'createdAt'>,
 ): Promise<void> {
-  const { error } = await db.from('ai_audit_log').insert({
+  const { error } = await supabase.from('ai_audit_log').insert({
     session_id: entry.sessionId,
     model_version: entry.modelVersion,
     prompt: entry.prompt,

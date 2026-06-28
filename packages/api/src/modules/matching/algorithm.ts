@@ -47,12 +47,12 @@ export function computeSpecialtyScore(vet: VetOnDuty, request: VetMatchRequest):
   const isLarge = LARGE_ANIMAL_SPECIES.has(species);
 
   const hasDirect = vet.specialties.some(
-    (s) => s === 'general' || s === 'emergency' || s === species || s === 'veterinary',
+    (s) => s === 'general' || s === 'emergency' || s === species,
   );
   if (hasDirect) return 1.0;
 
   const hasExotic = vet.specialties.includes('exotic');
-  const hasLarge = vet.specialties.includes('large_animal');
+  const hasLarge = species === 'horse' || species === 'cattle' || species === 'goat' || species === 'sheep' || species === 'pig';
 
   if (isExotic && hasExotic) return 1.0;
   if (isLarge && hasLarge) return 1.0;

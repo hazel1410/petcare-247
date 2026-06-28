@@ -12,6 +12,7 @@
 | 8 | ✅ | Matching module unit tests (23 tests, all passing) | 2026-06-28 |
 | 9 | ✅ | Payment-rail abstraction module (Stripe Connect + Wise adapters stubbed, wallet ledger, free-first-question, authorize-then-capture) | 2026-06-28 |
 | 10 | ✅ | Payment module unit tests (22 tests, all passing) | 2026-06-28 |
-| 11 | ⏳ | tRPC API surface (compose all module routers) | 2026-06-28 |
+| 11 | ✅ | tRPC API surface (compose module routers, fix type errors, clean typecheck) | 2026-06-28 |
+| 12 | ✅ | **Build summary**: 3 modules, 66 unit tests, clean typecheck | 2026-06-28 |
 | 8 | ⏳ | Payment-rail abstraction module | 2026-06-28 |
 | 9 | ⏳ | tRPC API surface (compose routers) | 2026-06-28 |

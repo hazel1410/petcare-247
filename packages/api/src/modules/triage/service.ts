@@ -23,14 +23,14 @@ export class TriageService {
 
   async evaluate(
     input: AIPreScreenInput,
-    db: { from(table: string): { insert(data: Record<string, unknown>): Promise<{ error?: { message: string } }> } },
+    supabase: { from(table: string): { insert(data: Record<string, unknown>): Promise<{ error?: { message: string } }> | any } },
   ): Promise<TriageResult> {
     const sessionId = uuid();
 
     // 1. Content filter (server-side guard)
     const filterResult = contentFilter(input.description);
     if (filterResult.blocked) {
-      await writeAIAuditLog(db, {
+      await writeAIAuditLog(supabase, {
         sessionId,
         modelVersion: this.config.modelVersion,
         prompt: JSON.stringify(input),
@@ -70,7 +70,7 @@ export class TriageService {
     const finalUrgency = keywordResult.hit ? keywordResult.score : aiResult.score;
 
     // 5. Audit log
-    await writeAIAuditLog(db, {
+    await writeAIAuditLog(supabase, {
       sessionId,
       modelVersion: this.config.modelVersion,
       prompt: JSON.stringify(input),

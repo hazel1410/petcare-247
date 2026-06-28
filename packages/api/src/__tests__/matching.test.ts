@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import type { VetSpecialty } from '../modules/matching/types';
 import {
   computeReputationScore,
   computeAvailabilityScore,
@@ -206,7 +207,7 @@ describe('matchVets', () => {
     const vetsWithNonEmergency = [
       ...sampleVets,
       { id: 'vet-d', name: 'Dr. D', region: 'US', timezone: 'America/Denver',
-        rating: 4.3, totalRatings: 80, specialties: ['dental'],
+        rating: 4.3, totalRatings: 80, specialties: ['dental'] as VetSpecialty[],
         currentLoad: 0, maxLoad: 3, languages: ['English'],
         responseTimeMinutes: 2, currentEarningsCents: 600000 },
     ];
