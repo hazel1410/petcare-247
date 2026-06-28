@@ -13,6 +13,9 @@ import { RecordsScreen } from './screens/Records';
 import { RemindersScreen } from './screens/Reminders';
 import { TelehealthScreen } from './screens/Telehealth';
 import { LostPetScreen } from './screens/LostPet';
+import { VetHomeScreen } from './screens/VetDashboard';
+import { VetAnswerScreen } from './screens/VetAnswer';
+import { VetEarningsScreen } from './screens/VetEarnings';
 
 const SCREENS: Record<ScreenName, () => JSX.Element> = {
   welcome: WelcomeScreen,
@@ -38,6 +41,9 @@ const SCREENS: Record<ScreenName, () => JSX.Element> = {
   reminders: RemindersScreen,
   telehealth: TelehealthScreen,
   lostPet: LostPetScreen,
+  vetHome: VetHomeScreen,
+  vetAnswer: VetAnswerScreen,
+  vetEarnings: VetEarningsScreen,
 };
 
 const TAB_ITEMS: { t: TabName; icon: string; label: string }[] = [

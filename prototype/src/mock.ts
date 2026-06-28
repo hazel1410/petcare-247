@@ -271,6 +271,48 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
 
 export const serviceCategory = (id: string) => SERVICE_CATEGORIES.find((c) => c.id === id) ?? SERVICE_CATEGORIES[0];
 
+// ---- Vet-side mock data ----
+export interface VetQueueItem {
+  id: string;
+  ownerName: string;
+  petName: string;
+  species: Species;
+  summary: string;
+  urgencyHint: Urgency;
+  waitedMin: number;
+  feeUsd: number;
+  region: string;
+}
+export const VET_QUEUE: VetQueueItem[] = [
+  { id: 'q1', ownerName: 'Jordan M.', petName: 'Biscuit', species: 'Dog', summary: 'Ate a small piece of chocolate ~30 min ago, now drooling.', urgencyHint: 'emergency', waitedMin: 1, feeUsd: 3.99, region: 'Austin, US 🇺🇸' },
+  { id: 'q2', ownerName: 'Priya R.', petName: 'Simba', species: 'Cat', summary: 'Not eating since yesterday, hiding under the bed.', urgencyHint: 'soon', waitedMin: 4, feeUsd: 3.99, region: 'Toronto, CA 🇨🇦' },
+  { id: 'q3', ownerName: 'Dana K.', petName: 'Pepper', species: 'Dog', summary: 'Limping slightly on back left leg after a long walk.', urgencyHint: 'monitor', waitedMin: 6, feeUsd: 1.99, region: 'Chicago, US 🇺🇸' },
+];
+
+export const VET_STATS = {
+  name: 'Dr. Aisha Khan',
+  initials: 'AK',
+  answeredToday: 12,
+  earningsTodayUsd: 41.4,
+  rating: 4.9,
+  reviews: 1284,
+  helped: 1240,
+  avgReplyMin: 2,
+};
+
+export interface Payout {
+  date: string;
+  amountUsd: number;
+  status: 'Paid' | 'Pending';
+  rail: string;
+}
+export const VET_PAYOUTS: Payout[] = [
+  { date: 'Jun 15, 2025', amountUsd: 286.2, status: 'Paid', rail: 'Wise → INR' },
+  { date: 'Jun 01, 2025', amountUsd: 312.75, status: 'Paid', rail: 'Wise → INR' },
+  { date: 'May 15, 2025', amountUsd: 298.4, status: 'Paid', rail: 'Wise → INR' },
+];
+export const VET_BALANCE_USD = 154.8;
+
 export interface TelehealthDay {
   label: string;
   times: string[];

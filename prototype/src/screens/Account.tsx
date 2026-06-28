@@ -144,6 +144,25 @@ export function AccountScreen() {
           Grievance officer: privacy@petcare247.app (India)
         </span>
 
+        {/* Vet mode */}
+        <div className="stack-sm">
+          <span className="h2">Are you a vet?</span>
+          <button
+            className="card card-tap lrow"
+            style={{ width: '100%', textAlign: 'left' }}
+            onClick={() => a.go('vetHome')}
+          >
+            <div className="row" style={{ gap: 12, alignItems: 'center', width: '100%' }}>
+              <span style={{ fontSize: 22 }}>🩺</span>
+              <div className="grow">
+                <span className="h3">Switch to Vet mode</span>
+                <p className="small muted" style={{ marginTop: 2 }}>Answer questions & track your earnings</p>
+              </div>
+              <Icon name="chevron" size={18} color="var(--text-muted)" />
+            </div>
+          </button>
+        </div>
+
         {/* Sign out */}
         <button
           className="btn btn-ghost"
