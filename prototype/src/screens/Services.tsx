@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { ER_CLINICS, TOXIC_FOODS, SERVICES_COMING } from '../mock';
+import { useApp } from '../app';
+import { BackHeader, Stars, Icon } from '../ui';
+import { ER_CLINICS, TOXIC_FOODS, SERVICE_CATEGORIES, serviceCategory } from '../mock';
 
 export function ServicesScreen() {
+  const a = useApp();
   const [foodQuery, setFoodQuery] = useState('');
 
-  const filteredFoods = foodQuery.trim().length === 0
-    ? TOXIC_FOODS
-    : TOXIC_FOODS.filter(f =>
-        f.name.toLowerCase().includes(foodQuery.trim().toLowerCase())
-      );
+  const filteredFoods =
+    foodQuery.trim().length === 0
+      ? TOXIC_FOODS
+      : TOXIC_FOODS.filter((f) => f.name.toLowerCase().includes(foodQuery.trim().toLowerCase()));
 
   function severityStyle(severity: string): React.CSSProperties {
     if (severity === 'Toxic') return { background: 'var(--coral)', color: '#fff' };
@@ -19,15 +21,39 @@ export function ServicesScreen() {
   return (
     <div className="screen fade">
       <div className="pad stack">
-
         <h1 className="h1">Services</h1>
 
-        {/* Section 1 — Emergency vets near you */}
+        {/* Everything for your pet — the marketplace breadth */}
+        <section className="stack-sm">
+          <h2 className="h2">For your pet</h2>
+          <p className="small muted">Groomers, walkers, boarding, supplies & more — all in one place.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            {SERVICE_CATEGORIES.map((c) => (
+              <button
+                key={c.id}
+                className="card card-tap"
+                style={{ textAlign: 'left', cursor: 'pointer', border: '1px solid var(--border)' }}
+                onClick={() => a.go('serviceCategory', { categoryId: c.id })}
+              >
+                <div style={{ fontSize: 26, marginBottom: 6 }}>{c.emoji}</div>
+                <div className="h3" style={{ fontSize: 15 }}>{c.label}</div>
+                <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                  <span className="tiny muted">{c.items.length} nearby</span>
+                  <Icon name="chevron" size={15} color="var(--text-faint)" />
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <div className="divider" />
+
+        {/* Emergency vets near you */}
         <section className="stack-sm">
           <h2 className="h2">Emergency vets near you</h2>
           <p className="small muted">Open right now and ready to help — no appointment needed.</p>
           <div className="stack-sm">
-            {ER_CLINICS.map(clinic => (
+            {ER_CLINICS.map((clinic) => (
               <div key={clinic.id} className="card stack-sm">
                 <div className="row-between wrap">
                   <span className="h3">{clinic.name}</span>
@@ -55,10 +81,7 @@ export function ServicesScreen() {
                     className="btn btn-sm btn-ghost"
                     style={{ flex: 1 }}
                     onClick={() =>
-                      window.open(
-                        `https://maps.google.com/?q=${encodeURIComponent(clinic.address)}`,
-                        '_blank'
-                      )
+                      window.open(`https://maps.google.com/?q=${encodeURIComponent(clinic.address)}`, '_blank')
                     }
                   >
                     📍 Directions
@@ -71,24 +94,22 @@ export function ServicesScreen() {
 
         <div className="divider" />
 
-        {/* Section 2 — Can my pet eat this? */}
+        {/* Can my pet eat this? */}
         <section className="stack-sm">
           <h2 className="h2">Can my pet eat this?</h2>
-          <p className="small muted">
-            Quick safety check for foods — it's 3am and you're not sure about that grape? We've got you.
-          </p>
+          <p className="small muted">Quick safety check for foods — not sure about that grape at 3am? We've got you.</p>
           <input
             className="input"
             type="search"
             placeholder="Search a food, e.g. grapes, chocolate…"
             value={foodQuery}
-            onChange={e => setFoodQuery(e.target.value)}
+            onChange={(e) => setFoodQuery(e.target.value)}
           />
           {foodQuery.trim().length > 0 && filteredFoods.length === 0 && (
             <p className="small muted center">No matches found. When in doubt, ask a vet.</p>
           )}
           <div className="stack-sm">
-            {filteredFoods.map(food => (
+            {filteredFoods.map((food) => (
               <div key={food.name} className="lrow card-flat">
                 <div className="grow stack-sm" style={{ gap: 2 }}>
                   <div className="row" style={{ gap: 8, alignItems: 'center' }}>
@@ -106,34 +127,64 @@ export function ServicesScreen() {
             ))}
           </div>
           <p className="disclaimer">
-            This list is for general reference only and is not veterinary advice. If your pet has
-            ingested something potentially harmful, contact a vet or emergency clinic immediately.
+            General reference only, not veterinary advice. If your pet has ingested something harmful, contact a vet
+            or emergency clinic immediately.
           </p>
         </section>
 
-        <div className="divider" />
-
-        {/* Section 3 — More services coming soon */}
-        <section className="stack-sm coming">
-          <h2 className="h2">More services</h2>
-          <p className="small muted">We're building more ways to care for your pet.</p>
-          <div className="stack-sm">
-            {SERVICES_COMING.map(svc => (
-              <div key={svc.kind} className="card lrow" style={{ alignItems: 'center', gap: 12 }}>
-                <span style={{ fontSize: 28 }}>{svc.emoji}</span>
-                <div className="grow stack-sm" style={{ gap: 2 }}>
-                  <span className="h3">{svc.kind}</span>
-                  <span className="small muted">{svc.desc}</span>
-                </div>
-                <span className="pill pill-amber" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
-                  Coming soon
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <div style={{ height: 96 }} />
+      </div>
+    </div>
+  );
+}
+
+export function ServiceCategoryScreen() {
+  const a = useApp();
+  const cat = serviceCategory(a.params?.categoryId ?? 'groomers');
+  const [done, setDone] = useState<Record<number, boolean>>({});
+
+  return (
+    <div className="screen fade">
+      <BackHeader title={cat.label} />
+      <div className="pad stack">
+        <div className="row" style={{ gap: 10, alignItems: 'center' }}>
+          <span style={{ fontSize: 30 }}>{cat.emoji}</span>
+          <div>
+            <div className="h2">{cat.label}</div>
+            <div className="small muted">{cat.blurb}</div>
+          </div>
+        </div>
+
+        <p className="disclaimer">
+          Preview — {cat.kind === 'products' ? 'checkout' : 'booking'} opens soon. We connect you to trusted local
+          partners, we don't replace them.
+        </p>
+
+        <div className="stack-sm">
+          {cat.items.map((it, i) => (
+            <div key={it.name} className="card stack-sm">
+              <div className="row-between">
+                <span className="h3" style={{ fontSize: 15.5 }}>{it.name}</span>
+                <span className="strong small">{it.price}</span>
+              </div>
+              <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+                <Stars value={it.rating} size={14} />
+                <span className="small muted">{it.rating.toFixed(1)}</span>
+                <span className="faint">·</span>
+                <span className="small muted">{it.meta}</span>
+              </div>
+              <button
+                className={'btn btn-sm ' + (done[i] ? 'btn-ghost' : 'btn-primary')}
+                style={{ width: '100%' }}
+                onClick={() => setDone((d) => ({ ...d, [i]: !d[i] }))}
+              >
+                {done[i] ? '✓ We’ll be in touch' : cat.cta}
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ height: 40 }} />
       </div>
     </div>
   );

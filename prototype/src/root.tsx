@@ -6,7 +6,7 @@ import { HomeScreen } from './screens/Home';
 import { PetsScreen, PetDetailScreen } from './screens/Pets';
 import { AskVetScreen, MatchingScreen } from './screens/Triage';
 import { ConsultScreen, RateScreen, ErFallbackScreen, VetProfileScreen } from './screens/Consult';
-import { ServicesScreen } from './screens/Services';
+import { ServicesScreen, ServiceCategoryScreen } from './screens/Services';
 import { CommunityScreen } from './screens/Community';
 import { AccountScreen } from './screens/Account';
 
@@ -29,6 +29,7 @@ const SCREENS: Record<ScreenName, () => JSX.Element> = {
   rate: RateScreen,
   erFallback: ErFallbackScreen,
   vetProfile: VetProfileScreen,
+  serviceCategory: ServiceCategoryScreen,
 };
 
 const TAB_ITEMS: { t: TabName; icon: string; label: string }[] = [

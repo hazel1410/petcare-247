@@ -61,7 +61,8 @@ export type ScreenName =
   | 'consult'
   | 'rate'
   | 'erFallback'
-  | 'vetProfile';
+  | 'vetProfile'
+  | 'serviceCategory';
 
 export const TABS: TabName[] = ['home', 'pets', 'services', 'community', 'account'];
 export const isTabScreen = (s: ScreenName): s is TabName => (TABS as string[]).includes(s);
@@ -164,6 +165,7 @@ function readInitial() {
     stack = ['home', s];
     if (s === 'petDetail') params = { petId: seedPet.id };
     if (s === 'vetProfile') params = { vetId: 'vet_aisha' };
+    if (s === 'serviceCategory') { stack = ['services', s]; tab = 'services'; params = { categoryId: 'groomers' }; }
     if (s === 'askVet') consult = { ...consult, petId: seedPet.id };
     if (s === 'erFallback') consult = { ...consult, petId: seedPet.id, urgency: 'emergency', urgencyScore: 5 };
     if (s === 'consult' || s === 'rate' || s === 'vetProfile') {

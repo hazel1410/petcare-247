@@ -202,3 +202,71 @@ export const URGENCY_META: Record<Urgency, { label: string; verdict: string; cls
   soon: { label: 'See a vet soon', verdict: 'Within 24 hours', cls: 'urgency-soon', emoji: '⏱️' },
   monitor: { label: 'Safe to monitor', verdict: 'Watch at home', cls: 'urgency-monitor', emoji: '✅' },
 };
+
+export interface ServiceItem {
+  name: string;
+  rating: number;
+  meta: string;
+  price: string;
+}
+export interface ServiceCategory {
+  id: string;
+  label: string;
+  emoji: string;
+  blurb: string;
+  kind: 'providers' | 'products';
+  cta: string;
+  items: ServiceItem[];
+}
+
+export const SERVICE_CATEGORIES: ServiceCategory[] = [
+  {
+    id: 'groomers', label: 'Groomers', emoji: '✂️', blurb: 'Trusted local groomers', kind: 'providers', cta: 'Contact',
+    items: [
+      { name: 'Paws & Polish', rating: 4.9, meta: '1.2 mi · Mobile + salon', price: 'from $45' },
+      { name: 'The Furry Spa', rating: 4.8, meta: '2.0 mi · Cats welcome', price: 'from $50' },
+      { name: 'Clip & Cuddle', rating: 4.7, meta: '3.4 mi · Same-day', price: 'from $38' },
+    ],
+  },
+  {
+    id: 'walkers', label: 'Walkers & sitters', emoji: '🦮', blurb: 'Vetted walkers & sitters near you', kind: 'providers', cta: 'Book',
+    items: [
+      { name: 'Maya R.', rating: 5.0, meta: '0.6 mi · 320 walks', price: '$22/walk' },
+      { name: 'Carlos D.', rating: 4.9, meta: '1.1 mi · Overnight ok', price: '$28/walk' },
+      { name: 'Happy Tails Co.', rating: 4.8, meta: '1.9 mi · Insured', price: '$25/walk' },
+    ],
+  },
+  {
+    id: 'boarding', label: 'Boarding', emoji: '🏠', blurb: 'Safe overnight stays', kind: 'providers', cta: 'Book',
+    items: [
+      { name: 'Cozy Paws Boarding', rating: 4.9, meta: '2.3 mi · 24/7 staff', price: '$55/night' },
+      { name: 'Wag Manor', rating: 4.7, meta: '4.0 mi · Live webcams', price: '$48/night' },
+      { name: "Whiskers' Retreat", rating: 4.8, meta: '5.1 mi · Cats only', price: '$40/night' },
+    ],
+  },
+  {
+    id: 'trainers', label: 'Trainers', emoji: '🎓', blurb: 'Certified behaviour trainers', kind: 'providers', cta: 'Contact',
+    items: [
+      { name: 'Good Dog Academy', rating: 4.9, meta: '1.5 mi · Puppy + adult', price: 'from $60' },
+      { name: 'Calm Canine', rating: 4.8, meta: '2.7 mi · Anxiety specialist', price: 'from $75' },
+    ],
+  },
+  {
+    id: 'supplies', label: 'Pet supplies', emoji: '🛍️', blurb: "Picked for your pet's likes", kind: 'products', cta: 'Add to cart',
+    items: [
+      { name: 'Grain-free salmon kibble', rating: 4.8, meta: "Matches Mochi's likes", price: '$34.99' },
+      { name: 'Orthopedic dog bed (M)', rating: 4.9, meta: 'Best seller', price: '$59.00' },
+      { name: 'Sweet-potato chews', rating: 4.7, meta: 'Mochi loves these', price: '$12.49' },
+    ],
+  },
+  {
+    id: 'places', label: 'Pet-friendly places', emoji: '📍', blurb: 'Cafés, parks & hotels that welcome pets', kind: 'providers', cta: 'Directions',
+    items: [
+      { name: 'Riverside Dog Park', rating: 4.9, meta: '0.8 mi · Off-leash', price: 'Free' },
+      { name: 'The Daily Grind Café', rating: 4.6, meta: '1.0 mi · Patio + water bowls', price: '$' },
+      { name: 'Lakeside Pet Hotel', rating: 4.7, meta: '6.2 mi · Pets stay free', price: '$$' },
+    ],
+  },
+];
+
+export const serviceCategory = (id: string) => SERVICE_CATEGORIES.find((c) => c.id === id) ?? SERVICE_CATEGORIES[0];
