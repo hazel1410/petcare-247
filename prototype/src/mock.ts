@@ -270,3 +270,45 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
 ];
 
 export const serviceCategory = (id: string) => SERVICE_CATEGORIES.find((c) => c.id === id) ?? SERVICE_CATEGORIES[0];
+
+export interface Vaccine {
+  name: string;
+  date: string;
+  due: string;
+  status: 'up-to-date' | 'due-soon' | 'overdue';
+}
+export const VACCINES: Vaccine[] = [
+  { name: 'Rabies', date: 'Mar 2025', due: 'Mar 2028', status: 'up-to-date' },
+  { name: 'DHPP (distemper)', date: 'Mar 2025', due: 'Mar 2026', status: 'up-to-date' },
+  { name: 'Leptospirosis', date: 'Jun 2025', due: 'Jul 2026', status: 'due-soon' },
+  { name: 'Bordetella (kennel cough)', date: 'Dec 2024', due: 'Dec 2025', status: 'overdue' },
+];
+
+export interface VisitRecord {
+  date: string;
+  type: string;
+  vet: string;
+  note: string;
+}
+export const VISITS: VisitRecord[] = [
+  { date: 'Jun 12, 2025', type: 'Triage consult', vet: 'Dr. Aisha Khan', note: 'Mild stomach upset — advised bland diet, resolved.' },
+  { date: 'Mar 03, 2025', type: 'Annual checkup', vet: 'Lansing Vet Clinic', note: 'Healthy. Weight 9 kg. Vaccines updated.' },
+  { date: 'Nov 20, 2024', type: 'Skin issue', vet: 'Dr. Ravi Menon', note: 'Mild allergy flare — antihistamine course.' },
+];
+
+export interface ReminderItem {
+  id: string;
+  title: string;
+  type: 'medication' | 'feeding' | 'vaccine' | 'grooming';
+  emoji: string;
+  schedule: string;
+  caregiver: string;
+  on: boolean;
+}
+export const REMINDERS: ReminderItem[] = [
+  { id: 'r1', title: 'Heartworm tablet', type: 'medication', emoji: '💊', schedule: '1st of every month', caregiver: 'You', on: true },
+  { id: 'r2', title: 'Breakfast', type: 'feeding', emoji: '🍽️', schedule: 'Daily · 8:00 AM', caregiver: 'You & Sam', on: true },
+  { id: 'r3', title: 'Dinner', type: 'feeding', emoji: '🍽️', schedule: 'Daily · 6:30 PM', caregiver: 'Sam', on: true },
+  { id: 'r4', title: 'Leptospirosis booster', type: 'vaccine', emoji: '💉', schedule: 'Jul 2026', caregiver: 'You', on: true },
+  { id: 'r5', title: 'Grooming appointment', type: 'grooming', emoji: '✂️', schedule: 'Every 6 weeks', caregiver: 'You', on: false },
+];

@@ -9,6 +9,8 @@ import { ConsultScreen, RateScreen, ErFallbackScreen, VetProfileScreen } from '.
 import { ServicesScreen, ServiceCategoryScreen } from './screens/Services';
 import { CommunityScreen } from './screens/Community';
 import { AccountScreen } from './screens/Account';
+import { RecordsScreen } from './screens/Records';
+import { RemindersScreen } from './screens/Reminders';
 
 const SCREENS: Record<ScreenName, () => JSX.Element> = {
   welcome: WelcomeScreen,
@@ -30,6 +32,8 @@ const SCREENS: Record<ScreenName, () => JSX.Element> = {
   erFallback: ErFallbackScreen,
   vetProfile: VetProfileScreen,
   serviceCategory: ServiceCategoryScreen,
+  records: RecordsScreen,
+  reminders: RemindersScreen,
 };
 
 const TAB_ITEMS: { t: TabName; icon: string; label: string }[] = [

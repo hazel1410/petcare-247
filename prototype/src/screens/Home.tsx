@@ -12,27 +12,10 @@ export function HomeScreen() {
     label: string;
     action: () => void;
   }[] = [
-    {
-      icon: 'paw',
-      label: 'Symptom checker',
-      action: () => a.go('askVet'),
-    },
-    {
-      emoji: '🥑',
-      icon: 'shield',
-      label: 'Toxic food?',
-      action: () => a.setTab('services'),
-    },
-    {
-      icon: 'pin',
-      label: 'Find ER vet',
-      action: () => a.go('erFallback'),
-    },
-    {
-      icon: 'paw',
-      label: 'Records',
-      action: () => a.setTab('pets'),
-    },
+    { icon: 'paw', label: 'Symptom checker', action: () => a.go('askVet') },
+    { icon: 'pin', label: 'Find ER vet', action: () => a.go('erFallback') },
+    { emoji: '📋', icon: 'shield', label: 'Health records', action: () => a.go('records') },
+    { emoji: '⏰', icon: 'bell', label: 'Reminders', action: () => a.go('reminders') },
   ];
 
   return (
