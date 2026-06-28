@@ -15,5 +15,6 @@
 | 11 | ✅ | Build Trust & Safety (licensed vets, encrypted records, triage-not-diagnosis disclaimer) | 2026-06-28 |
 | 12 | ✅ | Build Waitlist email capture form (stubbed success state) + Footer with markets (US/CA/IN) | 2026-06-28 |
 | 13 | ✅ | Build passes (`pnpm build`), clean production bundle | 2026-06-28 |
+| 14 | ✅ | **Interactive upgrade**: 3D Three.js hero scene (floating ring, ECG line, orbiting spheres), scroll-reveal animations on all sections, animated vet counter, interactive waitlist role toggle | 2026-06-28 |
 
 **Dev server:** `pnpm --filter @petcare/site dev` → http://localhost:5180

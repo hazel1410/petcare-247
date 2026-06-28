@@ -1,13 +1,15 @@
+import { ScrollReveal } from './ScrollReveal';
+
 const features = [
   {
     icon: '\u{1F9D1}\u200D\u{2695}\uFE0F',
     title: 'Vet triage & guidance',
-    desc: 'Get expert triage from licensed veterinarians. We help you understand urgency — we never diagnose or prescribe.',
+    desc: 'Get expert triage from licensed veterinarians. We help you understand urgency \u2014 we never diagnose or prescribe.',
   },
   {
     icon: '\u{1F4CB}',
     title: 'Digital records',
-    desc: 'Vaccination history, medications, weight tracking — all in one place, accessible anytime.',
+    desc: 'Vaccination history, medications, weight tracking \u2014 all in one place, accessible anytime.',
   },
   {
     icon: '\u{23F0}',
@@ -17,7 +19,7 @@ const features = [
   {
     icon: '\u{1F9F5}',
     title: 'Services near you',
-    desc: 'Find trusted groomers, walkers, and boarding — all reviewed by the pet parent community.',
+    desc: 'Find trusted groomers, walkers, and boarding \u2014 all reviewed by the pet parent community.',
   },
   {
     icon: '\u{1F6CD}\uFE0F',
@@ -35,20 +37,28 @@ export function Features() {
   return (
     <section className="section" id="features" aria-label="Features">
       <div className="section-inner">
-        <span className="section-label">Super-app</span>
-        <h2 className="section-title">Everything your pet needs</h2>
-        <p className="section-subtitle">
-          Beyond triage, PetCare 24/7 is your pet&rsquo;s wellness hub:
-        </p>
+        <ScrollReveal>
+          <span className="section-label">Super-app</span>
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <h2 className="section-title">Everything your pet needs</h2>
+        </ScrollReveal>
+        <ScrollReveal delay={150}>
+          <p className="section-subtitle">
+            Beyond triage, PetCare 24/7 is your pet&rsquo;s wellness hub:
+          </p>
+        </ScrollReveal>
         <div className="features-grid">
-          {features.map((f) => (
-            <div className="card" key={f.title}>
-              <div className="feature-icon" aria-hidden="true" style={{ background: 'var(--teal-light)' }}>
-                {f.icon}
+          {features.map((f, i) => (
+            <ScrollReveal key={f.title} delay={i * 80} direction="up">
+              <div className="card">
+                <div className="feature-icon" aria-hidden="true" style={{ background: 'var(--teal-light)' }}>
+                  {f.icon}
+                </div>
+                <h3 className="feature-title">{f.title}</h3>
+                <p className="feature-desc">{f.desc}</p>
               </div>
-              <h3 className="feature-title">{f.title}</h3>
-              <p className="feature-desc">{f.desc}</p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
