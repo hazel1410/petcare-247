@@ -13,10 +13,13 @@ import {
 
 export type Species = 'Dog' | 'Cat' | 'Parrot' | 'Rabbit' | 'Other';
 
+export type Gender = 'male' | 'female' | 'unknown';
+
 export interface Pet {
   id: string;
   name: string;
   species: Species;
+  gender: Gender;
   breed: string;
   color: string;
   weightKg: string;
@@ -108,6 +111,10 @@ interface AppCtx {
   selectPet: (id: string) => void;
   vetsOnline: number;
 
+  /* gender-based theming */
+  themeGender: Gender | null;
+  setThemeGender: (g: Gender | null) => void;
+
   /* consult flow */
   consult: ConsultDraft;
   patchConsult: (c: Partial<ConsultDraft>) => void;
@@ -129,6 +136,7 @@ const seedPet: Pet = {
   id: 'pet_seed',
   name: 'Mochi',
   species: 'Dog',
+  gender: 'female',
   breed: 'Shiba Inu',
   color: 'Cream',
   weightKg: '9',
@@ -156,6 +164,7 @@ function readInitial() {
     pets: [] as Pet[],
     selectedPetId: null as string | null,
     consult: emptyConsult(),
+    themeGender: null as Gender | null,
   };
   if (typeof location === 'undefined') return def;
   const s = new URLSearchParams(location.search).get('screen') as ScreenName | null;
@@ -192,6 +201,7 @@ function readInitial() {
     pets: needsData ? [seedPet] : [],
     selectedPetId: needsData ? seedPet.id : null,
     consult,
+    themeGender: needsData ? seedPet.gender : null,
   };
 }
 
@@ -208,6 +218,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [pets, setPets] = useState<Pet[]>(init.pets);
   const [selectedPetId, setSelectedPetId] = useState<string | null>(init.selectedPetId);
   const [vetsOnline] = useState(14);
+  const [themeGender, setThemeGender] = useState<Gender | null>(init.themeGender);
 
   const [consult, setConsult] = useState<ConsultDraft>(init.consult);
 
@@ -215,6 +226,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const go = useCallback((s: ScreenName, p: Record<string, any> = {}) => {
     setParams(p);
+    if (s === 'welcome') setThemeGender(null); // back to neutral when logged out
     if (isTabScreen(s)) {
       setTabState(s);
       setStack([s]);
@@ -237,8 +249,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const id = 'pet_' + Math.round(performance.now()).toString(36);
     setPets((prev) => [...prev, { ...p, id }]);
     setSelectedPetId(id);
+    setThemeGender(p.gender);
     return id;
   }, []);
+
+  const selectPet = useCallback(
+    (id: string) => {
+      setSelectedPetId(id);
+      const g = pets.find((p) => p.id === id)?.gender ?? null;
+      setThemeGender(g);
+    },
+    [pets],
+  );
 
   const patchConsult = useCallback(
     (c: Partial<ConsultDraft>) => setConsult((prev) => ({ ...prev, ...c })),
@@ -250,6 +272,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setOwner(seedOwner);
     setPets([seedPet]);
     setSelectedPetId(seedPet.id);
+    setThemeGender(seedPet.gender);
     setTabState('home');
     setStack(['home']);
   }, []);
@@ -270,8 +293,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     pets,
     addPet,
     selectedPetId,
-    selectPet: setSelectedPetId,
+    selectPet,
     vetsOnline,
+    themeGender,
+    setThemeGender,
     consult,
     patchConsult,
     resetConsult,

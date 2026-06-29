@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useApp, type Species } from '../app';
+import { useApp, type Species, type Gender } from '../app';
 import { BackHeader } from '../ui';
 import { SPECIES } from '../mock';
 
@@ -13,6 +13,7 @@ interface PetFormProps {
   onSave: (pet: {
     name: string;
     species: Species;
+    gender: Gender;
     breed: string;
     color: string;
     weightKg: string;
@@ -24,7 +25,9 @@ interface PetFormProps {
 }
 
 function PetForm({ headerTitle, stepLabel, onSave }: PetFormProps) {
+  const a = useApp();
   const [species, setSpecies] = useState<Species | ''>('');
+  const [gender, setGender] = useState<Gender | ''>('');
   const [name, setName] = useState('');
   const [breed, setBreed] = useState('');
   const [color, setColor] = useState('');
@@ -42,6 +45,7 @@ function PetForm({ headerTitle, stepLabel, onSave }: PetFormProps) {
     onSave({
       name: name.trim(),
       species: species as Species,
+      gender: (gender || 'unknown') as Gender,
       breed: breed.trim(),
       color: color.trim(),
       weightKg: weightKg.trim(),
@@ -91,6 +95,35 @@ function PetForm({ headerTitle, stepLabel, onSave }: PetFormProps) {
               keep {selectedSpecies.name} records.
             </p>
           )}
+        </div>
+
+        {/* ── Gender (themes the app) ── */}
+        <div className="field">
+          <span className="field-label">Gender</span>
+          <div className="chips" style={{ marginTop: 8 }}>
+            {([['female', '♀ Female'], ['male', '♂ Male'], ['unknown', 'Prefer not to say']] as const).map(
+              ([g, label]) => (
+                <button
+                  key={g}
+                  type="button"
+                  className={`chip${gender === g ? ' on' : ''}`}
+                  onClick={() => {
+                    setGender(g);
+                    a.setThemeGender(g === 'unknown' ? null : g);
+                  }}
+                >
+                  {label}
+                </button>
+              ),
+            )}
+          </div>
+          <p className="field-hint">
+            {gender === 'female'
+              ? "We'll tint the app in a warm rose 🌹"
+              : gender === 'male'
+                ? "We'll tint the app in a calm blue 🔵"
+                : "Pick one and the app takes on your pet's color ✨"}
+          </p>
         </div>
 
         {/* ── Name ── */}

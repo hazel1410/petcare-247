@@ -1,4 +1,5 @@
-import { AppProvider, useApp, isTabScreen, type ScreenName, type TabName } from './app';
+import { useEffect } from 'react';
+import { AppProvider, useApp, isTabScreen, type ScreenName, type TabName, type Gender } from './app';
 import { StatusBar, Icon } from './ui';
 import { WelcomeScreen, AuthScreen, OtpScreen } from './screens/Onboarding';
 import { OwnerProfileScreen, PetProfileScreen, AddPetScreen } from './screens/Profiles';
@@ -80,8 +81,38 @@ function Fab() {
   );
 }
 
+// Gender-based theming: female -> warm rose, male -> calm blue, else -> indigo default.
+const GENDER_THEME: Record<'female' | 'male', Record<string, string>> = {
+  female: {
+    '--primary': '#e8638a',
+    '--primary-dark': '#cf4d74',
+    '--primary-soft': '#fdebf1',
+    '--primary-glow': 'rgba(232, 99, 138, 0.32)',
+    '--primary-glow-strong': 'rgba(232, 99, 138, 0.40)',
+  },
+  male: {
+    '--primary': '#4f7cc9',
+    '--primary-dark': '#3f63a3',
+    '--primary-soft': '#e8f0fa',
+    '--primary-glow': 'rgba(79, 124, 201, 0.32)',
+    '--primary-glow-strong': 'rgba(79, 124, 201, 0.40)',
+  },
+};
+const THEME_VARS = ['--primary', '--primary-dark', '--primary-soft', '--primary-glow', '--primary-glow-strong'];
+
+function applyGenderTheme(g: Gender | null) {
+  const root = document.documentElement;
+  const theme = g === 'female' || g === 'male' ? GENDER_THEME[g] : null;
+  if (!theme) {
+    THEME_VARS.forEach((v) => root.style.removeProperty(v)); // fall back to CSS :root (indigo)
+    return;
+  }
+  Object.entries(theme).forEach(([k, val]) => root.style.setProperty(k, val));
+}
+
 function Shell() {
-  const { screen } = useApp();
+  const { screen, themeGender } = useApp();
+  useEffect(() => applyGenderTheme(themeGender), [themeGender]);
   const Comp = SCREENS[screen] ?? WelcomeScreen;
   const tabish = isTabScreen(screen);
   return (
