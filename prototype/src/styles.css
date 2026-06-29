@@ -4,9 +4,9 @@
    ============================================================ */
 
 :root {
-  --primary: #3aafa9;
-  --primary-dark: #2b8f8a;
-  --primary-soft: #e4f4f2;
+  --primary: #5b63e6;
+  --primary-dark: #454ccf;
+  --primary-soft: #eceefc;
   --amber: #f59e0b;
   --amber-dark: #d9870a;
   --amber-soft: #fef3df;
@@ -186,9 +186,9 @@ h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; color: var(--text); }
   min-height: 52px;
 }
 .btn:active { transform: scale(0.975); }
-.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(58, 175, 169, 0.32); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(91, 99, 230, 0.32); }
 .btn-primary:hover { background: var(--primary-dark); }
-.btn-amber { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(58, 175, 169, 0.32); }
+.btn-amber { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(91, 99, 230, 0.32); }
 .btn-amber:hover { background: var(--primary-dark); }
 .btn-ghost { background: var(--surface); color: var(--text); border: 1.5px solid var(--border-strong); box-shadow: var(--shadow-sm); }
 .btn-ghost:hover { background: var(--surface-alt); }
@@ -315,7 +315,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; color: var(--text); }
   border: 0; border-radius: var(--r-pill);
   padding: 12px 22px; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-  box-shadow: 0 8px 20px rgba(58, 175, 169, 0.38);
+  box-shadow: 0 8px 20px rgba(91, 99, 230, 0.38);
   font-family: var(--font-head);
 }
 .fab:active { transform: scale(0.97); }
@@ -380,7 +380,7 @@ h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; color: var(--text); }
 .bubble { max-width: 84%; padding: 12px 14px; border-radius: 18px; font-size: 14.5px; line-height: 1.5; }
 .bubble-ai { background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 6px; align-self: flex-start; }
 .bubble-me { background: var(--primary); color: #fff; border-bottom-right-radius: 6px; align-self: flex-end; }
-.bubble-vet { background: var(--primary-soft); border: 1px solid #cfeae8; border-bottom-left-radius: 6px; align-self: flex-start; }
+.bubble-vet { background: var(--primary-soft); border: 1px solid #d7d9f7; border-bottom-left-radius: 6px; align-self: flex-start; }
 .chatcol { display: flex; flex-direction: column; gap: 10px; }
 
 /* back header */
