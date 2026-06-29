@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useApp } from './app';
+import { COUNTRIES, type Country } from './mock';
 
 /* Shared presentational components every screen reuses. */
 
@@ -136,5 +138,104 @@ export function Icon({ name, size = 22, color = 'currentColor' }: { name: string
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d={p[name] ?? p.paw} />
     </svg>
+  );
+}
+
+/* ---- phone number field with searchable country-code dropdown ---- */
+export function PhoneField({ onChange, autoFocus }: { onChange: (full: string) => void; autoFocus?: boolean }) {
+  const [country, setCountry] = useState<Country>(COUNTRIES[0]);
+  const [national, setNational] = useState('');
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState('');
+
+  const filtered = COUNTRIES.filter((c) => {
+    const s = q.trim().toLowerCase();
+    return !s || c.name.toLowerCase().includes(s) || c.dial.includes(s) || c.code.toLowerCase().includes(s);
+  });
+
+  const emit = (c: Country, n: string) => onChange(n.trim() ? `${c.dial} ${n.trim()}` : '');
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <div className="row" style={{ gap: 8, alignItems: 'stretch' }}>
+        <button
+          type="button"
+          className="input"
+          style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', flexShrink: 0 }}
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Select country code"
+        >
+          <span style={{ fontSize: 18 }}>{country.flag}</span>
+          <span className="strong" style={{ fontSize: 15 }}>{country.dial}</span>
+          <span className="faint" style={{ fontSize: 11 }}>▾</span>
+        </button>
+        <input
+          className="input"
+          type="tel"
+          inputMode="tel"
+          placeholder="(555) 000-0000"
+          value={national}
+          autoFocus={autoFocus}
+          onChange={(e) => {
+            setNational(e.target.value);
+            emit(country, e.target.value);
+          }}
+          style={{ flex: 1 }}
+        />
+      </div>
+
+      {open && (
+        <>
+          <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 40 }} />
+          <div
+            className="card"
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 6px)',
+              left: 0,
+              right: 0,
+              zIndex: 50,
+              padding: 10,
+              maxHeight: 320,
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: 'var(--shadow-lg)',
+            }}
+          >
+            <input
+              className="input"
+              placeholder="Search country or code…"
+              value={q}
+              autoFocus
+              onChange={(e) => setQ(e.target.value)}
+              style={{ marginBottom: 8 }}
+            />
+            <div style={{ overflowY: 'auto' }}>
+              {filtered.map((c) => (
+                <button
+                  key={c.code}
+                  type="button"
+                  className="lrow"
+                  style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: 'none', border: 0, padding: '10px 4px' }}
+                  onClick={() => {
+                    setCountry(c);
+                    setOpen(false);
+                    setQ('');
+                    emit(c, national);
+                  }}
+                >
+                  <span style={{ fontSize: 20 }}>{c.flag}</span>
+                  <span className="grow body">{c.name}</span>
+                  <span className="small muted">{c.dial}</span>
+                </button>
+              ))}
+              {filtered.length === 0 && (
+                <p className="small muted center" style={{ padding: 12 }}>No match — try another spelling.</p>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 }

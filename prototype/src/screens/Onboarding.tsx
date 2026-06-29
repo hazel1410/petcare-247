@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useApp } from '../app';
-import { BackHeader, PawPulse } from '../ui';
+import { BackHeader, PawPulse, PhoneField } from '../ui';
 
 /* ---- brand icons for social login ---- */
 function AppleIcon() {
@@ -110,15 +110,19 @@ export function AuthScreen() {
           <label className="field-label">
             {a.authMethod === 'phone' ? 'Mobile number' : 'Email address'}
           </label>
-          <input
-            className="input"
-            type={a.authMethod === 'phone' ? 'tel' : 'email'}
-            inputMode={a.authMethod === 'phone' ? 'tel' : 'email'}
-            placeholder={a.authMethod === 'phone' ? '+1 (555) 000-0000' : 'you@example.com'}
-            value={a.authValue}
-            onChange={(e) => a.setAuthValue(e.target.value)}
-            autoFocus
-          />
+          {a.authMethod === 'phone' ? (
+            <PhoneField onChange={a.setAuthValue} autoFocus />
+          ) : (
+            <input
+              className="input"
+              type="email"
+              inputMode="email"
+              placeholder="you@example.com"
+              value={a.authValue}
+              onChange={(e) => a.setAuthValue(e.target.value)}
+              autoFocus
+            />
+          )}
         </div>
 
         <button
