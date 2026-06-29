@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../app';
 import { VETS, ER_CLINICS, URGENCY_META } from '../mock';
-import { BackHeader, Avatar, Stars, Icon } from '../ui';
+import { BackHeader, Avatar, Stars, Icon, Typing } from '../ui';
 
 /* ============================================================
    ConsultScreen — live chat view with the assigned vet
@@ -12,12 +12,58 @@ export function ConsultScreen() {
   const urgency = a.consult.urgency || 'soon';
   const meta = URGENCY_META[urgency];
   const description = a.consult.description || "My pet isn't well";
+  const firstName = vet.name.replace('Dr. ', '').split(' ')[0];
+
+  const VET_REPLIES = [
+    `Good question. Keep an eye on her over the next few hours — if she gets more lethargic, vomits again, or stops drinking, that's your cue to head in.`,
+    `That's reassuring. Since she's still alert, monitoring at home tonight is reasonable — just message me here if anything changes and I'll guide you.`,
+    `I'd jot down when it started and take a short video if it happens again — really useful for your in-person vet.`,
+    `You're doing all the right things. No human medications, and keep fresh water nearby. I'm right here if you need me.`,
+  ];
+
+  const [msgs, setMsgs] = useState<{ from: 'me' | 'vet'; text: string }[]>([]);
+  const [draft, setDraft] = useState('');
+  const [typing, setTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [msgs, typing]);
+
+  function send() {
+    const text = draft.trim();
+    if (!text) return;
+    setDraft('');
+    setMsgs((m) => [...m, { from: 'me', text }]);
+    setTyping(true);
+    setTimeout(() => {
+      setTyping(false);
+      setMsgs((m) => [
+        ...m,
+        { from: 'vet', text: VET_REPLIES[m.filter((x) => x.from === 'vet').length % VET_REPLIES.length] },
+      ]);
+    }, 1500);
+  }
 
   return (
-    <div className="screen fade">
-      <BackHeader title="Your Consultation" />
+    <div className="screen fade" style={{ overflow: 'hidden' }}>
+      {/* top bar with resolve action */}
+      <div className="topbar" style={{ justifyContent: 'space-between' }}>
+        <div className="row" style={{ gap: 12 }}>
+          <button className="iconbtn" onClick={a.back} aria-label="Back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M15 5l-7 7 7 7" stroke="#1F2937" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <span className="h3">Consultation</span>
+        </div>
+        <button className="btn-text" style={{ color: 'var(--primary)', fontWeight: 700 }} onClick={() => a.go('rate')}>
+          Resolve &amp; rate
+        </button>
+      </div>
 
-      <div className="pad stack">
+      <div ref={scrollRef} className="pad stack" style={{ flex: 1, overflowY: 'auto' }}>
         {/* Vet header card — tap to open full profile */}
         <div
           className="card card-tap"
@@ -106,15 +152,53 @@ export function ConsultScreen() {
           <div className="disclaimer">
             🩺 This is triage guidance only — not a diagnosis or prescription. Always follow up with your regular vet, especially if symptoms worsen.
           </div>
+
+          {/* Follow-up conversation */}
+          {msgs.map((m, i) => (
+            <div key={i} className={'bubble ' + (m.from === 'me' ? 'bubble-me' : 'bubble-vet')}>
+              {m.text}
+            </div>
+          ))}
+          {typing && (
+            <div className="bubble bubble-vet">
+              <Typing />
+            </div>
+          )}
         </div>
 
-        <div style={{ height: 16 }} />
+        <div style={{ height: 8 }} />
+      </div>
 
-        <button className="btn btn-primary" onClick={() => a.go('rate')}>
-          Mark resolved &amp; rate vet
+      {/* Message composer — keep chatting with the vet */}
+      <div
+        style={{
+          flexShrink: 0,
+          borderTop: '1px solid var(--border)',
+          background: 'var(--surface)',
+          padding: '10px 12px',
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+        }}
+      >
+        <input
+          className="input"
+          style={{ flex: 1, fontSize: 15, padding: '12px 14px' }}
+          placeholder={`Message Dr. ${firstName}…`}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') send();
+          }}
+        />
+        <button
+          className="btn btn-primary"
+          style={{ width: 'auto', minHeight: 46, padding: '0 18px' }}
+          disabled={!draft.trim()}
+          onClick={send}
+        >
+          Send
         </button>
-
-        <div style={{ height: 32 }} />
       </div>
     </div>
   );
